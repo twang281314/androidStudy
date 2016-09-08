@@ -284,10 +284,15 @@ public class WVJBWebViewClient extends WebViewClient {
             InputStream is = webView.getContext().getAssets()
                     .open("WebViewJavascriptBridge.js.txt");
             int size = is.available();
+
             byte[] buffer = new byte[size];
             is.read(buffer);
+
             is.close();
             String js = new String(buffer);
+
+            Log.i("已经加载完Js",String.valueOf(js.length()));
+
             executeJavascript(js);
         } catch (IOException e) {
             e.printStackTrace();
