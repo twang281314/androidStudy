@@ -2,10 +2,8 @@
 
  Android Training :http://hukai.me/android-training-course-in-chinese/index.html
 
+http://www.android-studio.org/
 
- [
-    {
-        "data": "[{"name":"8/11","seriesname":"spu累计销量","data":290},{"name":"8/11","seriesname":"需方销量","data":182}]",
-        "callbackId": "cb_3_1473227792169"
-    }
-]
+https://developer.android.com/reference/packages.html
+
+http://www.android-doc.com/reference/packages.html
