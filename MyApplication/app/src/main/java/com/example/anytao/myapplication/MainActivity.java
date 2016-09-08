@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("http://192.168.200.78:8080/views/demandForecastReport/");
-       // webView.loadUrl("file:///android_asset/index.html");
+        webView.loadUrl("http://192.168.200.78:8080/views/demandForecastReport/index.html");
+        //webView.loadUrl("http://192.168.6.24:8888/views/demandForecastReport/");
+        //webView.loadUrl("file:///android_asset/index.html");
 
         webViewClient = new MyWebViewClient(webView);
         webViewClient.enableLogging();
@@ -58,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                String result="{\"series\":[{\"spu\":[\"29267\",\"39088\",\"42928\"],\"count\":[\"5565\",\"5892\",\"7027\"]}],\"xAxis\":{\"date\":[\"2016\",\"2017\",\"2018\"]}}";
                 try {
-                    webViewClient.callHandler("updateSpmChartDataHandler", new JSONObject("{\"greetingFromObjC\": \"Hi there, JS!\" }"), new WVJBWebViewClient.WVJBResponseCallback() {
+                    webViewClient.callHandler("updateSpmChartDataHandler", new JSONObject(result), new WVJBWebViewClient.WVJBResponseCallback() {
 
                         @Override
                         public void callback(Object data) {
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void request(Object data, WVJBResponseCallback callback) {
-                    Toast.makeText(MainActivity.this, "ObjC Received message from JS:" + data, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "ObjC Received message from JS:"+data, Toast.LENGTH_LONG).show();
                     callback.callback("Response for message from ObjC!");
                 }
             });
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
             enableLogging();
 
-            registerHandler("testObjcCallback", new WVJBWebViewClient.WVJBHandler() {
+            registerHandler("clickSpmChartCallback", new WVJBWebViewClient.WVJBHandler() {
 
                 @Override
                 public void request(Object data, WVJBResponseCallback callback) {
@@ -112,8 +114,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            String result="{\"series\":[{\"spu\":[\"29267\",\"39088\",\"42928\"],\"count\":[\"5565\",\"5892\",\"7027\"]}],\"xAxis\":{\"date\":[\"2016\",\"2017\",\"2018\"]}}";
+
 //            try {
-//                callHandler("updateSpmChartDataHandler", new JSONObject("{\"foo\":\"before ready\" }"),new WVJBResponseCallback() {
+//                callHandler("updateSpmChartDataHandler", new JSONObject(result),new WVJBResponseCallback() {
 //
 //                    @Override
 //                    public void callback(Object data) {
