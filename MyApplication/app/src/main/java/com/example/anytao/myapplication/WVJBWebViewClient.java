@@ -282,7 +282,7 @@ public class WVJBWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         try {
             InputStream is = webView.getContext().getAssets()
-                    .open("WebViewJavascriptBridge5.js.txt");
+                    .open("WebViewJavascriptBridge.js.txt");
             int size = is.available();
 
             byte[] buffer = new byte[size];
