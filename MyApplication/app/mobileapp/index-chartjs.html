@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>手机端测试-ChartJS</title>
+    <!--<meta name="viewport" content="initial-scale=1, maximum-scale=1">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <!--<script type="text/javascript" src="scripts/libs/zepto/zepto.min.js"></script>-->
+    <script type="text/javascript" src="scripts/libs/chartjs/Chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["8-10", "8-11", "8-12", "8-13", "8-14", "8-15", "8-16"],
+                datasets: [{
+                    label: "spu累计销量",
+                    data: [120, 132, 101, 134, 90, 230, 210],
+                    spanGaps: false,
+                }, {
+                    label: "需方销量",
+                   data: [220, 182, 191, 234, 290, 330, 310],
+                    spanGaps: false,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
