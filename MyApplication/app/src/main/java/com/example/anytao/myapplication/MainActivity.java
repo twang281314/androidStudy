@@ -45,16 +45,18 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("http://192.168.200.78:8080/views/demandForecastReport/index.html");
+        //webView.loadUrl("http://192.168.200.78:8080/views/demandForecastReport/index.html");
         //webView.loadUrl("http://192.168.6.24:8888/views/demandForecastReport/");
-        //webView.loadUrl("file:///android_asset/index.html");
+        //webView.loadUrl("file:///android_asset/mobileapp/index-chartjs.html");
+        webView.loadUrl("file:///android_asset/mobileapp/views/demandForecastReport/index.html");
+        //webView.loadUrl("http://baidu.com");
 
         webViewClient = new MyWebViewClient(webView);
         webViewClient.enableLogging();
         webView.setWebViewClient(webViewClient);
 
-        Intent intent = new Intent(this, Main2Activity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, Main2Activity.class);
+//        startActivity(intent);
 
         findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
 

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>手机端测试-Echartjs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!--<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../styles/app.css">
+</head>
+
+<body>
+    <div id="main" style="width:100%;height:100%;position:fixed;display:block"></div>
+    <div id="info" style="width:100%;background-color:red;color:blue;display:none"></div>
+    <script type="text/javascript" src="../../scripts/libs/zepto/zepto.min.js"></script>
+    <script type="text/javascript" src="../../scripts/libs/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="../../scripts/libs/echarts/theme/iscs-theme.js"></script>
+    <!--<script type="text/javascript" src="/scripts/JsBridge.js"></script>-->
+    <script type="text/javascript">
+        function connectWebViewJavascriptBridge(callback) {
+
+            if (window.WebViewJavascriptBridge) {
+                return callback(WebViewJavascriptBridge);
+            } else {
+                document.addEventListener('WebViewJavascriptBridgeReady', function() {
+                    callback(WebViewJavascriptBridge)
+                }, false)
+            }
+            if (window.WVJBCallbacks) {
+                return window.WVJBCallbacks.push(callback);
+            }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() {
+                document.documentElement.removeChild(WVJBIframe)
+            }, 0)
+        }
+        //日志打印
+        function log(message, data) {
+            $('#info').html($('#info').html() + 'message:' + JSON.stringify(data));
+        }
+
+        var spmChart = echarts.init(document.getElementById("main"), 'iscs');
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                triggerOn: 'click',
+                showContent: true,
+                axisPointer: {
+                    lineStyle: {
+                        color: '#000000',
+                        opacity: '0.15',
+                        width: 4
+                    }
+                },
+                formatter: function(params, ticket, callback) {
+                    var requestData = [];
+                    params.forEach(function(param) {
+                        var object = {};
+                        object.name = param.name;
+                        object.seriesName = param.seriesName;
+                        object.data = param.data;
+                        requestData.push(object);
+                    });
+                    //点击图表事件处理
+                    window.WebViewJavascriptBridge.callHandler('clickSpmChartCallback', requestData, function(response) {
+                        log('JS got response', response)
+                    });
+                }
+            },
+            grid: {
+                x: 20,
+                y: 5,
+                y2: 0,
+                show: false,
+                containLabel: true
+            },
+            xAxis: {
+                splitLine: {
+                    show: true
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#f0f0f0',
+                    }
+                },
+                axisTick: {
+                    show: false,
+                    alignWithLabel: true
+                },
+                type: 'category',
+                boundaryGap: true,
+                data: [{
+                    value: '8.10',
+                    textStyle: {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'PingFang-SC-Light'
+                    }
+                }, {
+                    value: '8.11',
+                    textStyle: {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'PingFang-SC-Light'
+                    }
+                }, {
+                    value: '8.12',
+                    textStyle: {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'Arial'
+                    }
+                }, {
+                    value: '8.13',
+                    textStyle: {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'Arial'
+                    }
+                }, {
+                    value: '8.14',
+                    textStyle: {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'Arial'
+                    }
+                }, {
+                    value: '8.15',
+                    textStyle: {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'Arial'
+                    }
+                }, {
+                    value: '8.16',
+                    textStyle: {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'Arial'
+                    }
+                }]
+            },
+            yAxis: {
+                type: 'value',
+
+                axisLine: {
+                    lineStyle: {
+                        color: '#f0f0f0'
+                    }
+                },
+
+                splitLine: {
+                    show: true
+                },
+                axisTick: {
+                    show: false,
+                    alignWithLabel: true
+                }
+            },
+            series: [{
+                name: 'spu',
+                type: 'line',
+                symbol: 'circle',
+                data: [120, 290, 101, 134, 90, 230, 210]
+            }, {
+                name: 'count',
+                type: 'line',
+                symbol: 'circle',
+                data: [220, 182, 50, 234, 290, 330, 310]
+            }],
+            color: ['#ff7f1a', '#0094f6']
+        };
+        spmChart.setOption(option);
+        // $("#main").height(document.body.scrollHeight);
+        // spmChart.resize();
+        log('', $('#main').width());
+        connectWebViewJavascriptBridge(function(bridge) {
+            var uniqueId = 1
+                //android下需要执行该方法
+            if (bridge.init) {
+                bridge.init();
+                // bridge.init(function(message, responseCallback) {
+                //     log('JS got a message', message);
+                //     var data = {
+                //         'Javascript Responds': 'Wee!'
+                //     };
+                //     log('JS responding with', data);
+                //     responseCallback(data);
+                // });
+            }
+            //处理更新报表
+            bridge.registerHandler('updateSpmChartDataHandler', function(data, responseCallback) {
+                var responseData = {
+                    'Javascript Says': 'success'
+                };
+
+                // var tempData = '{"series":[{"spu":["29267","39088","42928"],"count":["5565","5892","7027"]}],"xAxis":{"date":["2016","2017","2018"]}}';
+
+                // data = JSON.parse(tempData);
+
+                var arrayDate = [];
+
+                data.xAxis.date.forEach(function(item) {
+
+                    var str = {};
+                    str.value = item;
+                    str.textStyle = {
+                        color: '#999999',
+                        align: 'center',
+                        fontFamily: 'Arial'
+                    };
+                    arrayDate.push(str);
+                });
+
+
+                //更新x轴信息
+                option.xAxis.data = arrayDate;
+                //更新y轴信息
+
+                option.series[0].data = data.series[0].spu;
+                option.series[1].data = data.series[0].count;
+                spmChart.setOption(option); //重绘报表
+                responseCallback(responseData);
+            })
+        });
+    </script>
+</body>
+
+</html>
