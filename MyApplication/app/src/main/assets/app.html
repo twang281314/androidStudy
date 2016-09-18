@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" http-equiv="Content-Type">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>测试app唤醒</title>
+    <link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon" />
+    <base href="/">
+</head>
+
+<body>
+
+    <a href="schema://host/datastring">启动应用程序</a>   
+    <script>
+        $("a[href^='schema://openapp']").on('click', function(e) {
+            e.preventDefault();
+            if (isWeixinBrowser() || isQQBrowser()) {
+                $('.layer').show(); //友好的提示页面
+            } else {
+                if (isAndroid) {
+                    //android//此操作会调起app并阻止接下来的js执行
+                    $('body').append("<iframe src='schema://openapp' style='display:none' target='' ></iframe>");
+
+                    //没有安装应用会执行下面的语句
+                    setTimeout(function() {
+                        window.location = 'http://www.yourdlurl.com/download.html'
+                    }, 600);
+                } else {
+                    //ioswindow.location = 'schema://openapp';
+                    setTimeout(function() {
+                        window.location = 'itms-apps://itunes.apple.com/app/idXXXXXXX'
+                    }, 25);
+                }
+            }
+        })
+
+        function isWeixinBrowser() {
+            return (/micromessenger/.test(ua)) ? true : false;
+        }
+
+        function isQQBrowser() {
+            return (ua.match(/QQ/i) == "qq") ? true : false;
+        }
+    </script>
+</body>
+
+</html>
