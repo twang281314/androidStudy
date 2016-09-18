@@ -31,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
         textView.setText("wangtao");
         webView = (WebView) findViewById(R.id.webView);
 
+        Intent intent=getIntent();
+
+        if(intent!=null){
+            String dataString = intent.getDataString();
+            if (dataString != null) {
+                Toast.makeText(this, dataString, Toast.LENGTH_LONG).show();
+            }
+        }
+
 //        webView.loadUrl("http://www.csdn.net");
 //        WebSettings wSet = webView.getSettings();
 //        wSet.setJavaScriptEnabled(true);
