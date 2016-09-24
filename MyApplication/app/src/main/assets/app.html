@@ -12,20 +12,24 @@
 
 <body>
 
-    <a href="schema://host/datastring">启动应用程序</a>   
+    <a href="schema://host/datastring">启动应用程序</a>
+    <script src="//cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
     <script>
-        $("a[href^='schema://openapp']").on('click', function(e) {
+        $("a[href^='schema://host/datastring']").on('click', function(e) {
+
             e.preventDefault();
-            if (isWeixinBrowser() || isQQBrowser()) {
+            var isAndroid = true;
+            if (false) {
                 $('.layer').show(); //友好的提示页面
             } else {
                 if (isAndroid) {
+
                     //android//此操作会调起app并阻止接下来的js执行
-                    $('body').append("<iframe src='schema://openapp' style='display:none' target='' ></iframe>");
+                    $('body').append("<iframe src='schema://host/datastring' style='display:none' target='' ></iframe>");
 
                     //没有安装应用会执行下面的语句
                     setTimeout(function() {
-                        window.location = 'http://www.yourdlurl.com/download.html'
+                        window.location = 'http://baidu.com'
                     }, 600);
                 } else {
                     //ioswindow.location = 'schema://openapp';
@@ -37,13 +41,50 @@
         })
 
         function isWeixinBrowser() {
-            return (/micromessenger/.test(ua)) ? true : false;
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function isQQBrowser() {
+            var ua = navigator.userAgent.toLowerCase();
             return (ua.match(/QQ/i) == "qq") ? true : false;
         }
+
+        var urlAndroid = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.sdu.didi.psnger&g_f=992316'; //Android下载地址
+        var urlIOS = 'https://itunes.apple.com/cn/app/di-di-da-che-da-che-shen-qi/id554499054?mt=8'; //iOS下载地址
+
+        //ua判断
+        var u = window.navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //andrioid
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        var isWeixin = u.toLowerCase().match(/MicroMessenger/i) == 'micromessenger'; //微信
+
+        if (isWeixin) {
+            document.getElementById('down_up').style.display = 'block';
+        }
+
+        document.getElementById('app').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (isAndroid) {
+                var iframe = document.createElement("iframe");
+                iframe.style.cssText = "display:none;width:0px;height:0px;";
+                iframe.src = "iscs://h5jump?from=weixin&code=hj7uy&token=569856322";
+                //iframe.src = "http://a.app.qq.com/o/simple.jsp?pkgname=com.sdu.didi.psnger&g_f=992316";
+                document.body.appendChild(iframe);
+                setTimeout(function() {
+                    window.location = urlAndroid; //实际下载地址
+                }, 600);
+            } else if (isiOS) {
+                //对于iOS 浏览器会弹出提示框 不好处理 考虑直接跳转至下载页面
+                window.location = urlIOS;
+            } else {
+
+            }
+        }, false);
     </script>
 </body>
-
 </html>
